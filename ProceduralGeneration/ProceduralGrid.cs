@@ -20,31 +20,82 @@ public class ProceduralGrid : MonoBehaviour
 
   void Start()
   {
-    MakeDiscreteProceduralGrid();
+    // MakeDiscreteProceduralGrid();
+    MakeContigiousProceduralGrid();
     UpdateMesh();
+  }
+
+  void MakeContigiousProceduralGrid()
+  {
+    //setting array sizes
+    vertices = new Vector3[(gridSize + 1) * (gridSize + 1)];
+    triangles = new int[gridSize * gridSize * 6];
+
+    //set tracker integers
+    int v = 0;
+    int t = 0;
+
+    //set vertex offset
+    float vertexOffset = cellSize * 0.5f;
+    //create vertex grid
+    for (int x = 0; x <= gridSize; x++) {
+      for (int y = 0; y <= gridSize; y++) {
+        vertices[v] = new Vector3((x * cellSize) - vertexOffset, 0, (y * cellSize) - vertexOffset);
+        v++;
+      }
+    }
+    //reset vertex tracker
+    v = 0;
+
+    //setting each cell triangles
+    for (int x = 0; x < gridSize; x++) {
+      for (int y = 0; y < gridSize; y++) {
+        triangles[t] = v;
+        triangles[t + 1] = triangles[t + 4] + v + 1;
+        triangles[t + 2] = triangles[t + 3] + v + (gridSize + 1);
+        triangles[t + 5] = v + (gridSize + 1) + 1;
+        v++;
+        t+=6;
+      }
+      v++;
+    }
+
   }
 
   void MakeDiscreteProceduralGrid()
   {
     //setting array sizes
-    vertices = new Vector3[4];
-    triangles = new int[6];
+    vertices = new Vector3[gridSize * gridSize * 4];
+    triangles = new int[gridSize * gridSize * 6];
+
+    //set tracker integers
+    int v = 0;
+    int t = 0;
 
     //set vertex offset
     float vertexOffset = cellSize * 0.5f;
 
-    //populate the vertices and triangles arrays
-    vertices[0] = new Vector3(-vertexOffset, 0, -vertexOffset) + gridOffset;
-    vertices[1] = new Vector3(-vertexOffset, 0, vertexOffset) + gridOffset;
-    vertices[2] = new Vector3(vertexOffset, 0, -vertexOffset) + gridOffset;
-    vertices[3] = new Vector3(vertexOffset, 0, vertexOffset) + gridOffset;
+    for (int x = 0; x < gridSize; x++) {
+      for (int y = 0; y < gridSize; y++) {
 
-    triangles[0] = 0;
-    triangles[1] = 1;
-    triangles[2] = 2;
-    triangles[3] = 2;
-    triangles[4] = 1;
-    triangles[5] = 3;
+        Vector3 cellOffset = new Vector3(x * cellSize, 0, y * cellSize);
+        //populate the vertices and triangles arrays
+        vertices[v] = new Vector3(-vertexOffset, 0, -vertexOffset) + cellOffset + gridOffset;
+        vertices[v + 1] = new Vector3(-vertexOffset, 0, vertexOffset) + cellOffset + gridOffset;
+        vertices[v + 2] = new Vector3(vertexOffset, 0, -vertexOffset) + cellOffset + gridOffset;
+        vertices[v + 3] = new Vector3(vertexOffset, 0, vertexOffset) + cellOffset + gridOffset;
+
+        triangles[t] = v;
+        triangles[t + 1] = v + 1;
+        triangles[t + 2] = v + 2;
+        triangles[t + 3] = v + 2;
+        triangles[t + 4] = v + 1;
+        triangles[t + 5] = v + 3;
+
+        v += 4;
+        t += 6;
+      }
+    }
 
   }
 
