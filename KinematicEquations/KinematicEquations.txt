@@ -1,0 +1,19 @@
+s (displacement)
+u (initial velocity)
+v (final velocity)
+a (acceleration)
+t (time)
+
+1) s = (u + v / 2) * t
+
+2) v = u + a * t
+
+3) s = u * t + (a*t^2 / 2)
+
+4) s = v * t - (a*t^2 / 2)
+
+5) v^2 = u^2 + 2 * a * s
+
+Motor.cs how much time will take an object A to reach an object b
+
+BallLauncher.cs launch a ball and calculate the velocity in xz and y axis to reach a target point
