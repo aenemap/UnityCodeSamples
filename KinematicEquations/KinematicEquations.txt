@@ -14,6 +14,9 @@ t (time)
 
 5) v^2 = u^2 + 2 * a * s
 
+Generally we need to know 3 variables to solve for a 4rth one in any equation
+equations can be combined 
+
 Motor.cs how much time will take an object A to reach an object b
 
 BallLauncher.cs launch a ball and calculate the velocity in xz and y axis to reach a target point
